@@ -1,12 +1,12 @@
 baseURL = "http://www.kristel.ee/"			# Site's URL
+disqusShortname = "kristel"                        # Your disqus shortname
+googleAnalytics = "UA-108858524-1"
 title = "Kristel Uiboaed"								# Site's Name
 theme = "manis-hugo-theme"
 copyright = "&copy; 2017 Kristel Uiboaed"	# Copyright notice. Note: You can use HTML tag here
 pluralizeListTitles = false
 paginate = 10								# Minimum number of item before paginate navigation show up
 canonifyURL = true
-googleAnalytics = "UA-108858524-1"
-disqusShortname = "kristel"                        # Your disqus shortname
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
