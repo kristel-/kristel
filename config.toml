@@ -6,7 +6,7 @@ pluralizeListTitles = false
 paginate = 10								# Minimum number of item before paginate navigation show up
 canonifyURL = true
 googleAnalytics = "UA-108858524-1"
-disqusShortname = "arresteddevops"                        # Your disqus shortname
+disqusShortname = "kristel"                        # Your disqus shortname
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
