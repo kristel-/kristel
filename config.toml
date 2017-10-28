@@ -1,4 +1,4 @@
-baseURL = "http://kristel.ee/"			# Site's URL
+baseURL = "http://www.kristel.ee/"			# Site's URL
 title = "Kristel Uiboaed"								# Site's Name
 theme = "manis-hugo-theme"
 copyright = "&copy; 2017 Kristel Uiboaed"	# Copyright notice. Note: You can use HTML tag here
