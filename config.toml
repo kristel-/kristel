@@ -19,7 +19,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 	disqusSections = ["blog"]               # list of section support disqus comments
 	# Site meta description
 	description = "Sweet little Hugo's theme for personal website or blog."
-	tagline = "Andmed, keel, tehnoloogia, kaardid, R, Python"   # Site's Tagline (Subtitle or Keyword)
+	tagline = "Andmeteadus, keeleteadus, tekstikaeve, andmeanalüüs, andmete visualiseerimine, R, Python"   # Site's Tagline (Subtitle or Keyword)
 	themeAttrib = true                      # If true give attribution to this theme
 	licenseURL = "/about/license"           # URL to license file, can be outside of your domain
 
