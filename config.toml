@@ -18,7 +18,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 	debugCSS = false                        # If false, use minified CSS (ui.min.css)
 	disqusSections = ["blog"]               # list of section support disqus comments
 	# Site meta description
-	description = "Sweet little Hugo's theme for personal website or blog."
+	description = "Andmeteadus, keeleteadus, tekstikaeve, loomuliku keele töötlus, andmeanalüüs, andmete visualiseerimine, R, Python"
 	tagline = "Andmeteadus, keeleteadus, tekstikaeve, loomuliku keele töötlus, andmeanalüüs, andmete visualiseerimine, R, Python"   # Site's Tagline (Subtitle or Keyword)
 	themeAttrib = true                      # If true give attribution to this theme
 	licenseURL = "/about/license"           # URL to license file, can be outside of your domain
