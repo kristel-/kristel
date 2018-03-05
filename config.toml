@@ -1,4 +1,4 @@
-baseURL = "http://www.kristel.ee/"			# Site's URL
+baseURL = "http://www.tekstikaeve.ee/"			# Site's URL
 disqusShortname = "kristel"                        # Your disqus shortname
 googleAnalytics = "UA-108858524-1"
 title = "Kristel Uiboaed"								# Site's Name
