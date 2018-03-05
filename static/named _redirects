@@ -1,0 +1,2 @@
+# Redirect domain aliases to primary domain
+http://www.kristel.ee/* http://www.tekstikaeve.ee/:splat 301!
