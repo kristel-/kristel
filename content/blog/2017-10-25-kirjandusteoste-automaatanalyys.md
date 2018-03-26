@@ -17,6 +17,7 @@ tags = [
   "corpus linguistics"]
 +++
 
+
 # Sissejuhatus
 
 Humanitaar- ja sotsiaalteaduslikes uurimistöödes on üks peamisi andmetüüpe mingil kujul tekst, mida andmeteaduses nimetatakse sageli struktureerimata andmeteks. See võib olla sotsiaalmeedia postituste kogu, ajakirjandustekstid, arhiivimaterjalid, kirjandusteosed, intervjuud vmt. Eri tüüpi vabalt kättesaadavaid andmeid on meie kasutuses järjest rohkem, kuid selliste andmete kogumine ja analüüsitavale kujule viimine eeldab üsnagi mahukat eeltööd ja mõningase tehnilise töö oskust. Kust selliseid andmeid üldse leida, kuidas need kokku koguda, kuidas sealt kätte saada uurimisküsimuse seisukohalt oluline materjal ning kuidas see siis lõpuks viia kvantitatiivse analüüsi mingile ühtlustatud kujule, mida on võimalik töödelda, mõõta ja analüüsida? Järgnevalt esitatud näide illustreerib, kuidas neid küsimusi võiks praktiliselt lahendada.
