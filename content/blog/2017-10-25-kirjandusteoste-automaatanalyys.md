@@ -14,7 +14,8 @@ tags = [
   "text-mining",
   "NLP",
   "data analysis",
-  "corpus linguistics"]
+  "corpus linguistics",
+  "R"]
 +++
 
 
