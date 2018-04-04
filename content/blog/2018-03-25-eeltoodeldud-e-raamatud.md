@@ -13,16 +13,15 @@ tags = [
   "text-mining",
   "NLP",
   "data analysis",
-  "corpus linguistics"]
+  "corpus linguistics",
+  "R"]
 +++
-
-
 
 ## Failid
 
-Nüüd on avalikult kättesaadav [failikogu](), mis sisaldab [Tartu Linnaraamatukogu](https://www.luts.ee/index.php/e-raamatud) e-raamatute faile. Failid on puhastatud ja esitatud nende esialgsel kujul. Lisaks on failid [Estnltk](https://estnltk.github.io/estnltk/1.4.1/index.html) vahenditega lemmatiseeritud. Välja on jäetud mõned luulekogud ja tekstid, mis vajasid teistsugust lisatöötlust. Kogu failide puhastamise protsessi tehnilise poole kohta saad täpsemalt lugeda [siit](http://www.tekstikaeve.ee/blog/2017-10-25-kirjandusteoste-automaatanalyys/).
+Nüüd on avalikult kättesaadav [failikogu](http://datadoi.ut.ee/handle/33/76), mis sisaldab [Tartu Linnaraamatukogu](https://www.luts.ee/index.php/e-raamatud) e-raamatute faile. Failid on viidud tavalisele tekstikujule, mis teeb nad automaatselt lihtsalt töödeldavaks. Algtekstid on [Estnltk](https://estnltk.github.io/estnltk/1.4.1/index.html) vahenditega ka lemmatiseeritud. Kogu andmestiku ühtsuse huvides on välja jäetud luulekogud ja mõned näidendid. Kogu failide puhastamise protsessi tehnilise poole kohta saad täpsemalt lugeda [siit](http://www.tekstikaeve.ee/blog/2017-10-25-kirjandusteoste-automaatanalyys/).
  
-**Pane tähele, et failid on lemmatiseeritu automaatselt, mis tähendab, et tekstides esineb vigu.**
+*Pane tähele, et failid on lemmatiseeritu automaatselt, mis tähendab, et kõik algvormid ei ole korrektsed.*
 
 ## Kasutatud teosed
 
