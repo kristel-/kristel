@@ -1,18 +1,18 @@
 +++
 title = "Kaartide töötlus R-ga [Manipulating Maps with R]"
-description = ""
+date = '2017-10-24'
+author = "Kristel Uiboaed"
 tags = [
     "kaardiandmed",
 	"Shapefile",
 	"geograafilised andmed",
-	"R",
 	"maps",
 	"geospatial data",
-	"geospatial analysis"
-]
-date = "2017-10-24"
+	"geospatial analysis",
+	"R"]
 +++
 
+# Sissejuhatus
 
 Analüüsides andmeid, mis on kuidagi seotud geograafiaga, tuleb üsna sageli ette, et andmete esitamiseks puudub sobiv kaart. Näiteks soovides kaardile kanda mingite väiksemate keelte uurimisandmeid, tuleb seda ette sageli. Keeltepiirkonnad ei pea kokku langema mõne riigi või riikide haldusterritoriaalse jaotusega, mille kaarti üldjuhul on üsna kerge leida. Järgnevalt näitan, kuidas oleks võimalik mõnda olemasolevat kaarti muutes tekitada uus töödeldav kaart, mida on hiljem võimalik andmete estiamiseks kasutada ja töödelda. Kasutan selleks programmi [R](https://www.r-project.org/) ning näiteandmetena [Eesti haldusjaotuse andmeid](http://geoportaal.maaamet.ee/est/Andmed-ja-kaardid/Haldus-ja-asustusjaotus-p119.html) ning minu eesmärgiks on tekitada uute omavalitsuste kaart, mis tekkis peale haldusreformi. See ülesanne tekkis praktilisest vajadusest, kui soovisine analüüsida kohalike omavalitsuste valimiste andmeid, kuid ei suutnud leida uute omavalitsuste kaarti töödeldaval kujul (näiteks Shapefile-formaadis). Et saada oma andmete jaoks sobiv kaart, võtsin aluseks olemasoleva, [asustusüksuste](http://geoportaal.maaamet.ee/est/Andmed-ja-kaardid/Haldus-ja-asustusjaotus-p119.html) kaardi, ühendasin liituvad piirkonnad ning nimetasin need uute nimedega. Järgnevalt esitan väikse juhendi, kuidas seda R-is teha.
 

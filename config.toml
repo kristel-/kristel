@@ -28,7 +28,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 	sub404 = "Back to <a href='/'>Home</a>."
 
 	colorTheme = "#ffb700"                  # Color of your website
-	latestCount = 3                         # Maximum number of item in Latest Posts or Works
+	latestCount = 10                         # Maximum number of item in Latest Posts or Works
 	faviconImg = ""                         # Path to site's favicon image
 	dateFmt = "02/01/2006"                # Date format in item list
 

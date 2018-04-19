@@ -1,6 +1,6 @@
 +++
 title = "Tõe ja Õiguse suhete võrgustik: eeltöötlus [Network of Novel Characters: Preprocessing]"
-date = '2018-03-25'
+date = '2018-03-26'
 author = "Kristel Uiboaed"
 tags = [
   "kirjandus",
