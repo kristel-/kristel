@@ -151,20 +151,37 @@ frequent_bigram_plot <- bigram_party_count %>%
 ggplotly(frequent_bigram_plot, height = 1800, width = 800)
 ```
 
+<iframe src='file.html'></iframe>
+
 Sagedaste sõnapaaride tabel.
 
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-d1 <- party_words_no_stop %>%
-  head(500) %>% 
-  datatable()
-d1
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+d2 <- datatable(head(bigram_party_count, 500), extensions = 'Scroller', options = list(
+  deferRender = TRUE,
+  scrollY = 500,
+  scroller = TRUE,
+  columnDefs = list(list(width = '50px', targets = "_all"))
+))
 ```
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
-library(htmlwidgets)
-library(htmltools)
+htmlwidgets::saveWidget(d2, file = "d2.html", selfcontained = TRUE)
+```
 
+<iframe seamless src="../d2/index.html" width="100%" height="500"></iframe>
+
+Sagedaste sõnakolmikute loend:
+
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+d1 <- datatable(head(trigram_party_count, 500), extensions = 'Scroller', options = list(
+  deferRender = TRUE,
+  scrollY = 500,
+  scroller = TRUE,
+  width = '100px'
+))
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
 htmlwidgets::saveWidget(d1, file = "d1.html", selfcontained = TRUE)
 ```
 
@@ -172,17 +189,22 @@ htmlwidgets::saveWidget(d1, file = "d1.html", selfcontained = TRUE)
 
 Sagedaste sõnade tabel.
 
-
-
-Sagedaste sõnakolmikute sagedused.
-
-```{r, echo=FALSE}
-datatable(head(trigram_party_count, 500), extensions = 'Scroller', options = list(
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+d3 <- datatable(head(party_words_no_stop, 500), extensions = 'Scroller', options = list(
   deferRender = TRUE,
   scrollY = 500,
-  scroller = TRUE
+  scroller = TRUE,
+  columnDefs = list(list(width = '50px', targets = "_all"))
 ))
 ```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+htmlwidgets::saveWidget(d3, file = "d3.html", selfcontained = TRUE)
+```
+
+<iframe seamless src="../d3/index.html" width="150%" height="500"></iframe>
+
+
 
 ```{r setup, include=FALSE}
 library(reticulate)
