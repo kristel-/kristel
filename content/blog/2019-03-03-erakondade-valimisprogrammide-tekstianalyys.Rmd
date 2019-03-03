@@ -1,8 +1,16 @@
----
-title: Erakondade programmide tekstianalüüs
-date: '2019-03-03'
-slug: erakondade-valimisprogrammide-tekstianalyys
----
+
++++
+title = "Erakondade valimisprogrammide tekstianalüüs"
+date = '2019-03-03'
+author = "Kristel Uiboaed"
+tags = [
+  "text-mining",
+  "NLP",
+  "data analysis",
+  "corpus linguistics",
+  "R"]
++++
+
 
 Valimispäeva puhul natuke visuaalset ülevaadet erakondade programmide tekstidest. Kõik tekstid on algvormistatud, korrastatud ja sagedased "sisutühjad" sõnad on eemaldatud. Seetõttu ei pruugi kõik sagedused olla samad, mis esialgses programmitekstis.
 
