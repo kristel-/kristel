@@ -151,11 +151,16 @@ ggplotly(frequent_bigram_plot, height = 1800, width = 800)
 Sagedaste sõnapaaride tabel.
 
 ```{r, echo=FALSE}
-datatable(head(bigram_party_count, 500), extensions = 'Scroller', options = list(
-  deferRender = TRUE,
-  scrollY = 500,
-  scroller = TRUE
-))
+
+datatable(head(bigram_party_count, 500), rownames = FALSE, 
+          options = list(
+            pageLength = 11, 
+            autoWidth = TRUE, 
+            columnDefs = list(list(
+              className = 'dt-left', 
+              targets = 0),
+              list(className = 'dt-left', targets = 1))))
+
 ```
 
 Sagedaste sõnade tabel.
