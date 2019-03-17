@@ -105,7 +105,8 @@ trigram_party_count <- trigrams_united %>% count(party, trigram, sort = TRUE) #%
 
 Erakondade programmides esinevad tegusõnad ja nende sagedused. Eemaldatud on tegusõnad *olema, pidama, toetama, tagama*, mis olid kõige sagedasemad kõigis programmides.
 
-```{r, echo=FALSE, message=FALSE, warning = FALSE}
+```{r}
+#, echo=FALSE, message=FALSE, warning = FALSE
 party_morph <- read_csv("/Users/kristeluiboaed/Documents/PERSONAL/RK_2019/party_morph_analysis_df.csv")
 party_morph <- party_morph %>% 
   mutate(lemmas = str_replace(lemmas, "\\|.*", ""))
