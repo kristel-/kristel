@@ -1,0 +1,262 @@
+---
+title: Erakondade valimisprogrammide tekstianalüüs
+date: '2019-03-03'
+slug: erakondade-valimisprogrammide-tekstianalyys
+author: "Kristel Uiboaed"
+---
+
+
+
+
+Järgnev esitab visuaalselt 2019. aasta riigikogu valimiste erakondade programmide tekstid. Tekstikaeve meetodid võimaldavad tekstide sisu analüüsida väga mitmekülgelselt ning siin esitan ainult mõned näited. Kõik tekstide sõnad on viidud nende algvormide ehk sõnaraamatu vormide kujule, selleks et saaksime sama sõna erinevad vormid ühe sõna alla koondade, nt et sõnad *valimised, valimine, valmisteni* oleksid kõik üks sõna *valmine*.
+
+Lisaks sõnavormide analüüsile saame analüüsida ka muud sõnade vormiinfot. Nii saame näiteks automaatselt tekstist välja võtta kõik tegusõnad ja need kokku lugeda. Allolev joonis esitab kõigi erakondede programmides esinenud sagedamad tegusõnad. Sagedused on n-ö normaliseeritud, kuna eri erakondade programmid on väga erineva tekstimahuga. Sagedusi standardiseerides on tegusõnade sagedused võrreldavad üle kõigi programmitekstide. On loomulik, et pikemas programmis esineb rohkem sõnu, sh ka ka tegusõnu. Olen loenditest eemaldanud tegusõnad *olema, pidama, toetama, tagama*, mis olid kõige sagedamad kõigis programmides ning mõned neist.
+
+```{r, message = FALSE, warning=FALSE, echo = FALSE}
+library(tidyverse)
+library(tidytext)
+library(knitr)
+library(stringr)
+library(plotly)
+
+library(readr)
+library(ggplot2)
+library(DT)
+
+library(htmlwidgets)
+library(htmltools)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
+files <- list.files('/Users/kristeluiboaed/Documents/PERSONAL/RK_2019/programmid/lemmad', full.names = TRUE)
+
+input_lemmas <- map(files, read_lines)
+names(input_lemmas) <- str_replace_all(list.files('/Users/kristeluiboaed/Documents/PERSONAL/RK_2019/programmid/lemmad/'), "_.*", "")
+
+#data.frame(input_lemmas[[1]], col.names=c('text', 'Name'))
+
+nimed <- list("E200", "EKRE", "ERE", "ISAMAA", "KE", "RE", "ROH", "SDE", "VE")
+
+# Map over two arguments: sites and means
+list_of_files_map2 <- map2(input_lemmas, nimed, ~tibble(text = .x,
+                                                     party = .y))
+
+party_df <- list_of_files_map2 %>% map_df(bind_rows)
+est_stopp <- read_csv("/Users/kristeluiboaed/Documents/PERSONAL/RK_2019/est_stopp.txt")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
+#sagedustabel stoppsõnadega ja ilma
+party_words <- party_df %>%
+  unnest_tokens(word, text, to_lower = FALSE) %>%
+  count(party, word, sort = TRUE) %>%
+  ungroup()
+
+party_words_no_stop <- party_words %>% filter(!word %in% est_stopp$word)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
+party_bigrams <- party_df %>%
+        unnest_tokens(bigram, text, token = "ngrams", n = 2, to_lower = FALSE)
+
+bigrams_separated <- party_bigrams %>%
+        separate(bigram, c("word1", "word2"), sep = " ")
+
+# bigrammid
+bigrams_filtered <- bigrams_separated %>%
+        filter(!word1 %in% est_stopp$word) %>%
+        filter(!word2 %in% est_stopp$word)
+
+# new bigram counts:
+bigram_counts <- bigrams_filtered %>% 
+        count(word1, word2, sort = TRUE)
+
+bigrams_united <- bigrams_filtered %>%
+  unite(bigram, word1, word2, sep = " ")
+
+bigram_party_count <- bigrams_united %>% count(party, bigram, sort = TRUE) #%>% arrange(desc(n))
+```
+
+
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
+party_trigrams <- party_df %>%
+        unnest_tokens(trigram, text, token = "ngrams", n = 3, to_lower = FALSE)
+
+trigrams_separated <- party_trigrams %>%
+        separate(trigram, c("word1", "word2", "word3"), sep = " ")
+
+# bigrammid
+trigrams_filtered <- trigrams_separated %>%
+        filter(!word1 %in% est_stopp$word) %>%
+        filter(!word2 %in% est_stopp$word) %>% 
+  filter(!word3 %in% est_stopp$word)
+
+
+# new bigram counts:
+trigram_counts <- trigrams_filtered %>% 
+        count(word1, word2, word3, sort = TRUE)
+
+trigrams_united <- trigrams_filtered %>%
+  unite(trigram, word1, word2, word3, sep = " ")
+
+trigram_party_count <- trigrams_united %>% count(party, trigram, sort = TRUE) #%>% arrange(desc(n))
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
+party_morph <- read_csv("/Users/kristeluiboaed/Documents/PERSONAL/RK_2019/party_morph_analysis_df.csv")
+party_morph <- party_morph %>% 
+  mutate(lemmas = str_replace(lemmas, "\\|.*", ""))
+
+party_words <- party_morph %>%
+  filter(postags == "V") %>% 
+  count(party, lemmas, sort = TRUE) %>%
+  ungroup() %>%
+  group_by(party) %>% 
+  top_n(15) %>%
+  ungroup() %>%
+  mutate(lemmas = reorder(lemmas, n))
+
+total_words <- party_morph %>%
+  count(party, lemmas, sort = TRUE) %>%
+  ungroup() %>% 
+  mutate(lemmas = reorder(lemmas, n)) %>% 
+  group_by(party) %>% 
+  summarize(total = sum(n))
+
+party_words <- left_join(party_words, total_words)
+
+verb_plot <- party_words %>%
+  filter(!(lemmas %in% c("olema", "pidama", "toetama", "ei", "tagama"))) %>% 
+  group_by(party) %>% 
+  arrange(desc(n)) %>%
+  top_n(15) %>% 
+  ungroup() %>% 
+  mutate(lemmas = factor(paste(lemmas, party, sep = "__"), 
+                       levels = rev(paste(lemmas, party, sep = "__")))) %>%
+  ggplot(aes(lemmas, (n/total)*10000, fill = party)) +
+  geom_col() +
+  labs(x = NULL, y = "sagedus") +
+  scale_x_discrete(labels = function(x) gsub("__.+$", "", x)) +
+  facet_wrap(~ party, scales = "free_y") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette="Set1", direction = -1) +
+  theme(legend.position="none")
+#ggplotly(verb_plot, height = 1800, width = 800)
+```
+
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+saveWidget(ggplotly(verb_plot, height = 1000, width = 800), file = "verb_plot.html", selfcontained = TRUE);
+```
+
+<iframe seamless src="../verb_plot/index.html" width="130%" height="1100", frameBorder="0"></iframe>
+
+```{r, echo = FALSE, warnings = FALSE, message = FALSE, fig.width=9, fig.height=9}
+frequent_bigram_plot <- bigram_party_count %>%
+  arrange(desc(n)) %>%
+  mutate(bigram = factor(bigram, levels = rev(unique(bigram)))) %>% 
+  group_by(party) %>% 
+  top_n(10) %>%
+  filter(n > 1) %>%
+  filter(!(bigram %in% c("võimalus osalema", "tund nädal", "sotsiaalne kaitse", "täitmine vajalik", "sõjaväestama piirivalve", "riik paigutama", "riigikaitse kõrgem", "puhas südametunnistus", "kõrgem juht", "kaotama bürokraatlik", "kõrgem juht", "kaotama bürokraatlik", "Eesti konservatiivne", "puhas südametunnistus", "puhas joogivesi", "käivitama riiklik", "juriidiline isik", "inimene käsi", "iseseisev kaitsevõime", "Eesti rahvuslik", "Eesti pere", "miljon euro", "Eesti kaitsmine", "inimene jõukus", "looduslik pühapaik", "bürokraatlik takistus", "balti riik", "kiire internetiühendus", "kaks aasta", "võrdne kohtlemine"))) %>% 
+  ungroup %>%
+  ggplot(aes(bigram, n, fill = party)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = "sagedus") +
+  facet_wrap(~party, ncol = 2, scales = "free") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette="Set1", direction = -1) +
+  theme( axis.text = element_text( size = 30 ),
+           axis.text.x = element_text( size = 38 ),
+           axis.title = element_text( size = 28),
+           legend.position="none",
+           # The new stuff
+           strip.text = element_text(size = 28))
+
+#ggsave(filename="frequent_bigram_plot.png", plot=frequent_bigram_plot, height = 37, width = 29, dpi = 'retina')
+#<figure><img src='/img/frequent_bigram_plot.png'><figcaption></figcaption></figure>
+```
+
+Saame moodustada tekstist automaatselt ka järjestikku esinevate sõnade kombinatsioone. Näiteks järgnev tabel eistab programmide tekstides esinevad sõnapaarid ja nende sagedused. Tabelist on võimalik sõna järgi ka otsida. Loendist on eemaldatud sõnapaarid, mis sisaldavad vähem sisu kandvaid sõnu nagu näiteks *ja, või, see, olema* jne.
+
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+d2 <- datatable(head(remove_rownames(bigram_party_count), 500), extensions = 'Scroller', colnames = c('Erakond', 'Sõnapaar', 'Sagedus'), options = list(
+  deferRender = TRUE,
+  scrollY = 500,
+  scroller = TRUE,
+  width = '200px',
+  columnDefs = list(list(width = '10%', className = 'dt-left', targets = list(3)))
+))
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+htmlwidgets::saveWidget(d2, file = "d2.html", selfcontained = TRUE)
+```
+
+<iframe seamless src="../d2/index.html" width="140%" height="700", frameBorder="0"></iframe>
+
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+d1 <- datatable(head(trigram_party_count, 500), extensions = 'Scroller', colnames = c('Erakond', 'Sõnakolmik', 'Sagedus'), options = list(
+  deferRender = TRUE,
+  scrollY = 500,
+  scroller = TRUE,
+  width = '10px',
+  columnDefs = list(list(width = '10%', className = 'dt-left', targets = list(2, 3)))
+))
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+htmlwidgets::saveWidget(d1, file = "d1.html", selfcontained = TRUE)
+#<iframe seamless src="../d1/index.html" width="100%" height="500"></iframe>
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+d3 <- datatable(head(party_words_no_stop, 500), extensions = 'Scroller', options = list(
+  deferRender = TRUE,
+  scrollY = 500,
+  scroller = TRUE,
+  columnDefs = list(list(width = '50px', targets = "_all"))
+))
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+htmlwidgets::saveWidget(d3, file = "d3.html", selfcontained = TRUE)
+#<iframe seamless src="../d3/index.html" width="150%" height="500"></iframe>
+#<figure><img src='party_program_similarity.png'><figcaption></figcaption></figure>
+```
+
+
+Kõigi tekstide sõnade põhjal on võimalik mõõta ka kogu teksti sarnasust ja võrrelda seda teistega. Allolev joonis esitab kõigi programmide kvantitatiivse võrdluse tulemused. Tumedam lilla osutab suuremale sarnasusele ning tumedam roheline väiksemale sarnasusele erakondade programmide tekstides.
+
+<figure><img src='/img/party_program_similarity.png'><figcaption></figcaption></figure>
+
+Järgnev tabel oli sisendiks eelnevale joonisele ning esitab sama informatsiooni numbriliselt tabeli kujul. Väärtused jäävad 0 ja 1 vahele ning 1 tähendaks, et programmid on identsed (nagu näha erakondade programmide võrdluses iseendaga) ning 0 tähendaks, et programmitekstid on täiesti erinvad.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cor_df <- read_csv("/Users/kristeluiboaed/Documents/PERSONAL/RK_2019/cor_df.csv")
+names(cor_df)[1] <- "///"
+
+datatable(cor_df, extensions = 'Scroller', options = list(
+  deferRender = TRUE,
+  scrollY = 500,
+  scroller = TRUE
+))
+```
+
+Programmide tekste on võimalik visualiseerida ka võrdlevalt, esitades kahe programmi kõige iseloomulikumad sõnad kahemõõtmelisel graafikul. Näiteks kui võrdleme E200 ja Reformierakonna programme, siis sõnad, mis on rohkevm vasakul ülemises nurgas on iseloomulikumad E200-le ning sõnad mis on kaugel paremal all, on iseloomulikumad Reformierakonna programmile. Üleval paremal nurgas on sõnad, mis esinevad sarnaselt mõlemas programmis. Näiteks eristavad E200 programmi sõnad *pikk, plaan, globaalne, valitsemisperiood, tööstus, ruum jne* ning RE programmile on kahe programmi võrdluses omasemad sõnad *tähelepanu, pöörama, leidma, pension, erivajadus, rahastamine, parandama*.
+
+<iframe seamless src="../E200_RE/index.html" width="200%" height="750", frameBorder="0"></iframe>
+
+<iframe seamless src="../RE_KE/index.html" width="200%" height="750", frameBorder="0"></iframe>
+
+<iframe seamless src="../SDE_EKRE/index.html" width="200%" height="750", frameBorder="0"></iframe>
+
+<iframe seamless src="../isamaa_ekre/index.html" width="200%" height="750", frameBorder="0"></iframe>
