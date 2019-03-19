@@ -255,7 +255,7 @@ Programmide tekste on võimalik visualiseerida ka võrdlevalt, esitades kahe pro
 
 <iframe seamless src="../E200_RE/index.html" width="200%" height="750", frameBorder="0"></iframe>
 
-<iframe seamless src="../RE_KE.html" width="200%" height="750", frameBorder="0"></iframe>
+<iframe seamless src="../RE_KE.html/index.html" width="200%" height="750", frameBorder="0"></iframe>
 
 <iframe seamless src="../SDE_EKRE/index.html" width="200%" height="750", frameBorder="0"></iframe>
 
